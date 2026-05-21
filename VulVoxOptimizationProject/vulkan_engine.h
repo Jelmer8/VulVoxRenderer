@@ -8,6 +8,8 @@ namespace vulvox
         Vulkan_Engine();
         ~Vulkan_Engine();
 
+        void set_present_mode(const std::string vk_present_mode);
+
         void init_window(uint32_t width, uint32_t height);
         void init_vulkan();
 
@@ -48,6 +50,8 @@ namespace vulvox
         std::string get_memory_statistics() const;
 
     private:
+
+        VkPresentModeKHR present_mode;
 
         void update_uniform_buffer();
 

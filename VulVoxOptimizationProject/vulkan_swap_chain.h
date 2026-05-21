@@ -8,7 +8,7 @@ namespace vulvox
 
         explicit Vulkan_Swap_Chain(Vulkan_Instance* vulkan_instance);
 
-        void create_swap_chain(GLFWwindow* window, VkSurfaceKHR surface);
+        void create_swap_chain(GLFWwindow* window, VkSurfaceKHR surface, VkPresentModeKHR present_mode);
 
         /// <summary>
         /// In case of a window resize we need to recreate the swap chain so it is compatible again
@@ -27,6 +27,9 @@ namespace vulvox
         std::vector<VkImageView> image_views;
 
     private:
+
+		//Save present_mode in case the swap chain needs to be recreated, so we can use the same present mode again
+        VkPresentModeKHR present_mode;
 
         //Couple this swap chain to a specific vulkan instance (The swap chain will be destroyed before the instance)
         Vulkan_Instance* vulkan_instance;

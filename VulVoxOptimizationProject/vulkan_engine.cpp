@@ -14,6 +14,32 @@ namespace vulvox
     {
     }
 
+    void Vulkan_Engine::set_present_mode(const std::string vk_present_mode)
+    {
+        if (vk_present_mode == "VK_PRESENT_MODE_IMMEDIATE_KHR")
+            this->present_mode = VK_PRESENT_MODE_IMMEDIATE_KHR;
+
+        else if (vk_present_mode == "VK_PRESENT_MODE_MAILBOX_KHR")
+            this->present_mode = VK_PRESENT_MODE_MAILBOX_KHR;
+
+        else if (vk_present_mode == "VK_PRESENT_MODE_FIFO_KHR")
+            this->present_mode = VK_PRESENT_MODE_FIFO_KHR;
+
+        else if (vk_present_mode == "VK_PRESENT_MODE_FIFO_RELAXED_KHR")
+            this->present_mode = VK_PRESENT_MODE_FIFO_RELAXED_KHR;
+
+        // Optional extensions (if you use them in your project)
+        else if (vk_present_mode == "VK_PRESENT_MODE_SHARED_DEMAND_REFRESH_KHR")
+            this->present_mode = VK_PRESENT_MODE_SHARED_DEMAND_REFRESH_KHR;
+
+        else if (vk_present_mode == "VK_PRESENT_MODE_SHARED_CONTINUOUS_REFRESH_KHR")
+            this->present_mode = VK_PRESENT_MODE_SHARED_CONTINUOUS_REFRESH_KHR;
+
+		//Default to FIFO (only guaranteed to work present mode) if the provided string doesn't match any present mode
+        else
+            this->present_mode = VK_PRESENT_MODE_FIFO_KHR;
+    }
+
     void Vulkan_Engine::init_window(uint32_t width, uint32_t height)
     {
         this->width = width;
@@ -44,7 +70,7 @@ namespace vulvox
         vulkan_instance.init_device();
         vulkan_instance.init_allocator();
 
-        swap_chain.create_swap_chain(window, vulkan_instance.surface);
+        swap_chain.create_swap_chain(window, vulkan_instance.surface, present_mode);
         mvp_handler.set_aspect_ratio(static_cast<float>(width) / static_cast<float>(height));
 
         create_render_pass();
@@ -613,7 +639,7 @@ namespace vulvox
 
         cleanup_swap_chain();
 
-        swap_chain.create_swap_chain(window, vulkan_instance.surface);
+        swap_chain.create_swap_chain(window, vulkan_instance.surface, present_mode);
 
         mvp_handler.set_aspect_ratio(static_cast<float>(width) / static_cast<float>(height));
 

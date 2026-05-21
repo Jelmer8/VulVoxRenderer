@@ -7,7 +7,7 @@ namespace vulvox
     {
     }
 
-    void Vulkan_Swap_Chain::create_swap_chain(GLFWwindow* window, VkSurfaceKHR surface)
+    void Vulkan_Swap_Chain::create_swap_chain(GLFWwindow* window, VkSurfaceKHR surface, VkPresentModeKHR present_mode_local)
     {
         //Query supported formats and extends
         Swap_Chain_Support_Details swap_chain_support = vulkan_instance->query_swap_chain_support(surface);
@@ -15,7 +15,10 @@ namespace vulvox
         VkSurfaceFormatKHR surface_format = choose_swap_surface_format(swap_chain_support.formats);
         std::cout << "Surface format: " << string_VkFormat(surface_format.format) << std::endl;
 
-        VkPresentModeKHR present_mode = choose_swap_present_mode(swap_chain_support.present_modes);
+		//Save present_mode for later in case we need to recreate the swap chain
+        present_mode = present_mode_local;
+
+        //VkPresentModeKHR present_mode = choose_swap_present_mode(swap_chain_support.present_modes);
         std::cout << "Present mode: " << string_VkPresentModeKHR(present_mode) << std::endl;
 
         VkExtent2D swap_extent = choose_swap_extent(swap_chain_support.capabilities, window);
@@ -101,7 +104,7 @@ namespace vulvox
 
         cleanup_swap_chain();
 
-        create_swap_chain(window, surface);
+        create_swap_chain(window, surface, present_mode);
     }
 
     void Vulkan_Swap_Chain::cleanup_swap_chain()
@@ -134,7 +137,7 @@ namespace vulvox
         return available_formats[0];
     }
 
-    VkPresentModeKHR Vulkan_Swap_Chain::choose_swap_present_mode(const std::vector<VkPresentModeKHR>& available_present_modes) const
+    /*VkPresentModeKHR Vulkan_Swap_Chain::choose_swap_present_mode(const std::vector<VkPresentModeKHR>& available_present_modes) const
     {
         for (const auto& available_present_mode : available_present_modes)
         {
@@ -147,7 +150,7 @@ namespace vulvox
 
         //We default to vertical sync
         return VK_PRESENT_MODE_FIFO_RELAXED_KHR;
-    }
+    }*/
 
     /// <summary>
     /// Pick the appropriate resolution for the swap chain.

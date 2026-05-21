@@ -10,8 +10,9 @@ namespace vulvox
 
     Renderer::~Renderer() = default;
 
-    void Renderer::init(uint32_t width, uint32_t height, float field_of_view, float near_plane, float far_plane)
+    void Renderer::init(uint32_t width, uint32_t height, float field_of_view, float near_plane, float far_plane, const std::string vk_present_mode)
     {
+        vulkan_engine->set_present_mode(vk_present_mode);
         vulkan_engine->init(width, height);
         vulkan_engine->get_mvp_handler().set_field_of_view(field_of_view);
         vulkan_engine->get_mvp_handler().set_near_plane(near_plane);

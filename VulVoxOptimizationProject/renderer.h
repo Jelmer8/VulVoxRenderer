@@ -12,7 +12,7 @@ namespace vulvox
         Renderer();
         ~Renderer();
 
-        void init(uint32_t width, uint32_t height, float field_of_view, float near_plane, float far_plane);
+        void init(uint32_t width, uint32_t height, float field_of_view, float near_plane, float far_plane, const std::string vk_present_mode);
         void destroy();
 
         /// <summary>
